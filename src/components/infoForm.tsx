@@ -18,7 +18,7 @@ export const InfoForm: React.FC = observer(() => {
             telegram_uid: 0,
             role_id: UserRole.USER,
             extraFields: [],
-            addresses: [],
+            addresses: [{country: '', city: '', street: '', building: '', appartment: '', postal_code: ''}],
         },
     })
 
@@ -56,15 +56,13 @@ export const InfoForm: React.FC = observer(() => {
         for (const addr of data.addresses) {
             const addressPayload: Omit<Address, 'id'> = {
                 user_id: created.id,
+                country: addr.country,
                 city: addr.city,
                 street: addr.street,
                 building: addr.building,
+                appartment: addr.appartment,
                 postal_code: addr.postal_code,
                 is_deleted: false,
-                extraFields: addr.extraFields.reduce<Record<string,string>>((acc, cur) => {
-                    if (cur.key) acc[cur.key] = cur.value
-                    return acc
-                }, {}),
             }
             await userStore.addAddress(addressPayload);
         }
@@ -126,8 +124,8 @@ export const InfoForm: React.FC = observer(() => {
 
         <fieldset>
             <legend> Дополнительные поля </legend>
-            {extraFields.map((field, idx) => (
-                <div key = {field.id}>
+            {extraFields.map((userField, idx) => (
+                <div key = {userField.id}>
                     <input
                         placeholder='Название поля'
                         {
@@ -150,6 +148,61 @@ export const InfoForm: React.FC = observer(() => {
                 Добавить дополнительное поле
             </button>
         </fieldset>
+
+        <fieldset>
+            <legend>Адрес</legend>
+            {addresses.map((addrField, idx) => (
+                <div key = {addrField.id}>
+                    <h4>Адрес №{idx + 1}</h4>
+                    <input
+                        placeholder='Страна'
+                        {
+                            ...register(`addresses.${idx}.city`, { required: 'Страна обязателен' })
+                        } />
+                    <input
+                        placeholder='Город'
+                        {
+                            ...register(`addresses.${idx}.city`, { required: 'Город обязателен' })
+                        } />
+                    <input
+                        placeholder='Улица'
+                        {
+                            ...register(`addresses.${idx}.street`, { required: 'Улица обязателна' })
+                        } />
+                    <input
+                        placeholder='Дом'
+                        {
+                            ...register(`addresses.${idx}.building`, { required: 'Номер дома обязателен' })
+                        } />
+                    <input
+                        placeholder='Квартира'
+                        {
+                            ...register(`addresses.${idx}.appartment`)
+                        } />
+                    <input 
+                        placeholder='Индекс'
+                        {
+                            ...register(`addresses.${idx}.postal_code`, {required: 'Индекс обязателен'})
+                        }
+                    />
+                    <button type='button' onClick={() => {
+                        if (addresses.length > 1) removeAddress(idx)}} 
+                        disabled = {addresses.length <= 1}
+                        >
+                        Удалить адрес
+                    </button>
+                </div>
+            ))}
+            <button type='button' onClick={() => appendAddress({
+                country: '', city: '', street: '', building: '', appartment: '', postal_code: ''
+                })}>
+                    Добавить дополнительный адрес
+                </button>
+        </fieldset>
+
+        <button type='submit' disabled={isSubmitting}>
+            {isSubmitting ? 'Сохраняю...' : 'Сохранить'}
+        </button>
         </form>
     )
 })

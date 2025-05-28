@@ -47,8 +47,10 @@ async fetchUsers() {
                 this.page += 1;
             }
         })
+        return response.data;
     } catch (error) {
         console.error('Не могу загрузить пользователей', error);
+        throw error;
     } finally {
         runInAction(() => {
             this.loadingUsers = false;
@@ -70,8 +72,10 @@ async addUser(user: Omit<User, 'id'>) {
         runInAction(() => {
             this.users.unshift(response.data);
         });
+        return response.data;
     } catch (error) {
         console.error('Не могу загрузить пользователя', error);
+        throw error;
     } finally {
         runInAction(() => {
             this.loadingUsers = false;
@@ -86,8 +90,10 @@ async fetchAddress(user_id: number) {
         runInAction(() => {
             this. addresses = response.data;
         });
+        return response.data;
     } catch (error) {
         console.error('Не могу загрузить адрес пользователя', error);
+        throw error
     } finally {
         runInAction(() => {
             this.loadingAddresses = false;
@@ -108,8 +114,10 @@ async addAddress(address: Omit<Address, 'id'>) {
         runInAction(() => {
             this.addresses.unshift(response.data);
         });
+        return response.data;
     } catch (error) {
         console.error('Не могу згрузить адреса пользователя', error);
+        throw error;
     } finally {
         runInAction(() => {
             this.loadingAddresses = false;

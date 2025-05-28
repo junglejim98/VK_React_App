@@ -7,12 +7,13 @@ export enum UserRole {
 export interface Address{
     id: number;
     user_id: number;
+    country: string;
     city: string;
     street: string;
     building: string;
+    appartment?: string;
     postal_code: string;
     is_deleted: boolean;
-    extraFields?: Record<string,string>;
 };
 
 export interface User {

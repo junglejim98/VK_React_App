@@ -5,9 +5,7 @@ export interface ExtraField {
     value: string
 };
 
-export interface AddressInput extends Omit<Address, 'id' | 'user_id'| 'is_deleted' | 'extraFields'> {
-    extraFields: ExtraField[];
-};
+export type AddressInput = Omit<Address, 'id' | 'user_id'| 'is_deleted'>
 
 export interface FormValues extends Omit<User, 'id' | 'created_at' | 'addresses' | 'extraFields'> {
     extraFields: ExtraField[];
