@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { userStore } from '../store/UserStore';
 import { User, Address, UserRole } from '../types';
 import type { FormValues } from '../types/form';
-import style from "./form.module.scss";
+import { Form, Button, Row, Col } from 'react-bootstrap'
 
 export const InfoForm: React.FC = observer(() => {
     const {
@@ -77,136 +77,227 @@ export const InfoForm: React.FC = observer(() => {
     const isSubmitting = userStore.loadingUsers || userStore.loadingAddresses
     
     return (
-        <form onSubmit={handleSubmit(onSubmit)} >
-            <h2>Добавить пользователя</h2>
-        <div className={style.formRow}>
-        <div className={style.inputBlock}>
-            <label className={style.label}>Telegram UID*</label>
-            <input type="number" {...register('telegram_uid', { required: 'UID обязателен', valueAsNumber: true })} className={style.input}/>
-            {errors.telegram_uid && <span>{errors.telegram_uid.message}</span>}
-        </div>
-
-        <div className={style.inputBlock}>
-            <label className={style.label}>Имя*</label>
-            <input type="text" {...register('first_name', { required: 'Имя обязательно' })} className={style.input}/>
-            {errors.first_name && <span>{errors.first_name.message}</span>}
-        </div>
-
-        <div className={style.inputBlock}>
-            <label className={style.label}>Фамилия*</label>
-            <input type="text" {...register('last_name', { required: 'Фамилия обязательно' })} className={style.input}/>
-            {errors.last_name && <span>{errors.last_name.message}</span>}
-        </div>
-
-        <div className={style.inputBlock}>
-            <label className={style.label}>TG username</label>
-            <input type="text" {...register('tg_username')} className={style.input}/>
-        </div>
-
-        <div className={style.inputBlock}>
-            <label className={style.label}>Ссылка на фото профиля</label>
-            <input {
-                ...register('photo_url', {
-                    pattern: {
-                        value: /^(https?:\/\/\S+)$/,
-                        message: 'Неверная ссылка',
-                    },
-                })
-            } className={style.input}/>
-            {errors.photo_url && <span>{errors.photo_url.message}</span>}
-        </div>
-        <div className={style.inputBlock}>
-            <label className={style.label}>Роль*</label>
-            <select {...register('role_id', {required: true})} className={style.input}>
-                <option value = {UserRole.ADMIN}>ADMIN</option>
-                <option value = {UserRole.MODERATOR}>MODERATOR</option>
-                <option value = {UserRole.USER}>USER</option>
-            </select>
-        </div>
-
-        <fieldset className={style.field}>
-            <legend className={style.legend}> Дополнительные поля </legend>
-            {extraFields.map((userField, idx) => (
-                <div key = {userField.id} className={style.inputBlock}>
-                    <input
-                        placeholder='Название поля'
-                        {
-                            ...register(`extraFields.${idx}.key` as const, {
-                                required: 'Введите имя поля',
+        <Form onSubmit={handleSubmit(onSubmit)} >
+            <Row className='g-3 mb-4'>
+                <Col md={4}>
+                    <Form.Group controlId='telegram_uid'>
+                        <Form.Label>Telegram UID*</Form.Label>
+                        <Form.Control type="number" {...register('telegram_uid', { required: 'UID обязателен', valueAsNumber: true })}/>
+                        {errors.telegram_uid && (<Form.Text className='text-danger'>{errors.telegram_uid.message}</Form.Text>)}
+                    </Form.Group>
+                </Col>
+                <Col md={4}>
+                    <Form.Group controlId='first_name'>
+                        <Form.Label>Имя*</Form.Label>
+                        <Form.Control type="text" {...register('first_name', { required: 'Имя обязательно' })} />
+                        {errors.first_name && (<Form.Text className='text-danger'>{errors.first_name.message}</Form.Text>)}
+                    </Form.Group>
+                </Col>
+                <Col md={4}>
+                    <Form.Group controlId='last_name'>
+                        <Form.Label>Фамилия*</Form.Label>
+                        <Form.Control type="text" {...register('last_name', { required: 'Фамилия обязательно' })} />
+                        {errors.last_name && (<Form.Text className='text-danger'>{errors.last_name.message}</Form.Text>)}
+                    </Form.Group>
+                </Col>
+            </Row>
+            
+            <Row className='g-3 mb-4'>
+                <Col md={4}>
+                    <Form.Group controlId='tg_username'>
+                        <Form.Label>TG username</Form.Label>
+                        <Form.Control type="text" {...register('tg_username')} />
+                    </Form.Group>
+                </Col>
+                <Col md={4}>
+                    <Form.Group controlId='photo_url'>
+                        <Form.Label>Ссылка на фото профиля</Form.Label>
+                        <Form.Control {
+                            ...register('photo_url', {
+                                pattern: {
+                                    value: /^(https?:\/\/\S+)$/,
+                                    message: 'Неверная ссылка',
+                                },
                             })
-                        } className={style.input}/>
-                    <input placeholder='Значение для нового поля'
-                    {
-                        ...register(`extraFields.${idx}.value` as const, {
-                            required: ' Задайте значение для поля',
-                        })
-                    } className={style.input}/>
-                    <button type='button' onClick={() => removeUserExtra(idx)} className={style.button}>
-                        Удалить поле
-                    </button>
-                </div>
+                        } />
+                        {errors.photo_url && (<Form.Text className='text-danger'>{errors.photo_url.message}</Form.Text>)}
+                    </Form.Group>
+                </Col>
+                <Col md={4}>
+                        <Form.Group controlId='role_id'>
+                            <Form.Label>Роль*</Form.Label>
+                            <Form.Select {...register('role_id', {required: true})} >
+                                <option value = {UserRole.ADMIN}>ADMIN</option>
+                                <option value = {UserRole.MODERATOR}>MODERATOR</option>
+                                <option value = {UserRole.USER}>USER</option>
+                            </Form.Select>
+                    </Form.Group>
+                </Col>
+            </Row>
+
+
+        <fieldset className='border rounded p-4 mb-4 bg-light'>
+            <legend className='fw-semibold px-2 bg-light'> Дополнительные поля </legend>
+            {extraFields.map((userField, idx) => (
+                <Row key = {userField.id} className='g-3 align-items-end mb-3'>
+                    <Col md={6}>
+                        <Form.Group controlId={`extraFields.${idx}.key`}>
+                            <Form.Label>Название поля</Form.Label>
+                                <Form.Control
+                                    {
+                                        ...register(`extraFields.${idx}.key` as const, {
+                                            required: 'Введите имя поля',
+                                        })
+                                    } />
+                                    {errors.extraFields?.[idx]?.key && (
+                                        <Form.Text className='text-danger'>
+                                            {errors.extraFields[idx]!.key!.message}
+                                        </Form.Text>
+                                    )}
+                        </Form.Group>
+                    </Col>
+                    <Col md={5}>
+                        <Form.Group controlId={`extraFields.${idx}.value`}>
+                            <Form.Label>Значение</Form.Label>
+                                <Form.Control
+                                {
+                                    ...register(`extraFields.${idx}.value` as const, {
+                                        required: ' Задайте значение для поля',
+                                    })
+                                } />
+                                {errors.extraFields?.[idx]?.value && (
+                                        <Form.Text className='text-danger'>
+                                            {errors.extraFields[idx]!.value!.message}
+                                        </Form.Text>
+                                )}
+                        </Form.Group>
+                    </Col>
+                    <Col md={1}>
+                    <Button variant='outline-danger' onClick={() => removeUserExtra(idx)}>
+                        X
+                    </Button>
+                    </Col>
+                </Row>
             ))}
-            <button type='button' onClick={() => appendUserExtra({key: '', value: ''})} className={style.button}>
+            <Button variant='outline-primary' onClick={() => appendUserExtra({key: '', value: ''})}>
                 Добавить дополнительное поле
-            </button>
+            </Button>
         </fieldset>
 
-        <fieldset className={style.field}>
-            <legend className={style.legend}>Адрес</legend>
+        <fieldset className='border rounded p-4 mb-4 bg-light'>
+            <legend className='fw-semibold px-2 bg-light'>Адрес</legend>
             {addresses.map((addrField, idx) => (
-                <div key = {addrField.id} className={style.inputBlock}>
-                    <h4>Адрес №{idx + 1}</h4>
-                    <input
-                        placeholder='Страна'
-                        {
-                            ...register(`addresses.${idx}.country`, { required: 'Страна обязателен' })
-                        } className={style.input}/>
-                    <input
-                        placeholder='Город'
-                        {
-                            ...register(`addresses.${idx}.city`, { required: 'Город обязателен' })
-                        } className={style.input}/>
-                    <input
-                        placeholder='Улица'
-                        {
-                            ...register(`addresses.${idx}.street`, { required: 'Улица обязателна' })
-                        } className={style.input}/>
-                    <input
-                        placeholder='Дом'
-                        {
-                            ...register(`addresses.${idx}.building`, { required: 'Номер дома обязателен' })
-                        } className={style.input}/>
-                    <input
-                        placeholder='Квартира'
-                        {
-                            ...register(`addresses.${idx}.appartment`)
-                        } className={style.input}/>
-                    <input 
-                        placeholder='Индекс'
-                        {
-                            ...register(`addresses.${idx}.postal_code`, {required: 'Индекс обязателен'})
-                        }
-                    className={style.input} />
-                    <button type='button' onClick={() => {
-                        if (addresses.length > 1) removeAddress(idx)}} 
-                        disabled = {addresses.length <= 1}
-                        className={style.button}>
-                        Удалить адрес
-                    </button>
-                </div>
+            <React.Fragment key = {addrField.id}>
+                <Row  className='g-3 align-items-end mb-3'>
+                    <Col xs={12}>
+                        <h4>Адрес №{idx + 1}</h4>
+                    </Col>
+                    <Col md={4}>
+                        
+                        <Form.Group controlId={`addresses.${idx}.country`}>
+                            <Form.Label>Страна</Form.Label>
+                                <Form.Control
+                                    {
+                                        ...register(`addresses.${idx}.country`, { required: 'Страна обязательна' })
+                                    } />
+                                    {errors.addresses?.[idx]?.country && (
+                                        <Form.Text className='text-danger'>
+                                            {errors.addresses[idx]!.country!.message}
+                                        </Form.Text>
+                                    )}
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group controlId={`addresses.${idx}.city`}>
+                            <Form.Label>Город</Form.Label>
+                                <Form.Control
+                                    {
+                                        ...register(`addresses.${idx}.city`, { required: 'Город обязателен' })
+                                    } />
+                                    {errors.addresses?.[idx]?.city && (
+                                        <Form.Text className='text-danger'>
+                                            {errors.addresses[idx]!.city!.message}
+                                        </Form.Text>
+                                    )}
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group controlId={`addresses.${idx}.street`}>
+                            <Form.Label>Улица</Form.Label>
+                                <Form.Control
+                                    {
+                                        ...register(`addresses.${idx}.street`, { required: 'Улица обязателна' })
+                                    } />
+                                    {errors.addresses?.[idx]?.street && (
+                                        <Form.Text className='text-danger'>
+                                            {errors.addresses[idx]!.street!.message}
+                                        </Form.Text>
+                                    )}
+                        </Form.Group>
+                    </Col>
+                </Row>
+                <Row className='g-3 align-items-end mb-3'>
+                    <Col md={3}>
+                    <Form.Group controlId={`addresses.${idx}.building`}>
+                            <Form.Label>Дом</Form.Label>
+                                <Form.Control
+                                    {
+                                        ...register(`addresses.${idx}.building`, { required: 'Номер дома обязателен' })
+                                    }  />
+                                    {errors.addresses?.[idx]?.building && (
+                                        <Form.Text className='text-danger'>
+                                            {errors.addresses[idx]!.building!.message}
+                                        </Form.Text>
+                                    )}
+                        </Form.Group>
+                    </Col>
+                    <Col md={3}>
+                    <Form.Group controlId={`addresses.${idx}.appartment`}>
+                            <Form.Label>Квартира</Form.Label>
+                                <Form.Control
+                                    {
+                                        ...register(`addresses.${idx}.appartment`)
+                                    }  />
+                        </Form.Group>
+                    </Col>
+                    <Col md={5}>
+                    <Form.Group controlId={`addresses.${idx}.postal_code`}>
+                            <Form.Label>Индекс</Form.Label>
+                                <Form.Control
+                                    {
+                                        ...register(`addresses.${idx}.postal_code`, {required: 'Индекс обязателен'})
+                                    }  />
+                                    {errors.addresses?.[idx]?.postal_code && (
+                                        <Form.Text className='text-danger'>
+                                            {errors.addresses[idx]!.postal_code!.message}
+                                        </Form.Text>
+                                    )}
+                        </Form.Group>
+                    </Col>
+                    <Col md={1}>
+                    <Button
+                        variant='outline-danger'
+                        onClick={() => addresses.length > 1 && removeAddress(idx)}
+                        disabled={addresses.length <= 1}
+                        >
+                            X
+                        </Button>
+                    </Col>
+                </Row>
+            </React.Fragment>
             ))}
-            <button type='button' onClick={() => appendAddress({
+            <Button variant='outline-primary' onClick={() => appendAddress({
                 country: '', city: '', street: '', building: '', appartment: '', postal_code: ''
-                })} className={style.button}>
+                })}>
                     Добавить дополнительный адрес
-                </button>
+                </Button>
         </fieldset>
-        </div>
-      
-            <button type='submit' disabled={isSubmitting} className={style.submitButton}>
+       
+        <div className='text-center'>
+            <Button type='submit' variant='dark' disabled={isSubmitting}>
                 {isSubmitting ? 'Сохраняю...' : 'Сохранить'}
-            </button>
-      
-        </form>
+            </Button>
+        </div>
+        </Form>
     )
 })

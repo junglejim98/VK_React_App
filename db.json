@@ -51,6 +51,33 @@
       "extraFields": {
         "VK": "IVANOV IVAN"
       }
+    },
+    {
+      "id": "e681",
+      "telegram_uid": 1231231,
+      "first_name": "Василий",
+      "last_name": "Василевский",
+      "tg_username": "@qwe",
+      "photo_url": "",
+      "role_id": 3,
+      "created_at": "2025-05-29T19:23:20.079Z",
+      "extraFields": {
+        "Важное поле": "123",
+        "Еще одно важное поле ": "123123"
+      }
+    },
+    {
+      "id": "61ef",
+      "telegram_uid": 123123123,
+      "first_name": "йцу",
+      "last_name": "йцу",
+      "tg_username": "йцу",
+      "photo_url": "https://sun-ekb.ru/files/2022/06/48-anim-chel-pauk-350x350.png",
+      "role_id": 3,
+      "created_at": "2025-05-29T19:27:08.660Z",
+      "extraFields": {
+        "Супер герой?": "Да!"
+      }
     }
   ],
   "addresses": [
@@ -85,6 +112,39 @@
       "building": "98",
       "appartment": "9",
       "postal_code": "19829nz",
+      "is_deleted": false
+    },
+    {
+      "id": "4508",
+      "user_id": "e681",
+      "country": "Страна 1",
+      "city": "Город 1",
+      "street": "Улица 1",
+      "building": "1",
+      "appartment": "1",
+      "postal_code": "111111",
+      "is_deleted": false
+    },
+    {
+      "id": "3a32",
+      "user_id": "e681",
+      "country": "Страна 2",
+      "city": "Город 2",
+      "street": "Улица 2",
+      "building": "2",
+      "appartment": "2",
+      "postal_code": "222222",
+      "is_deleted": false
+    },
+    {
+      "id": "c2a2",
+      "user_id": "61ef",
+      "country": "США",
+      "city": "Квинс",
+      "street": "Инграм стрит",
+      "building": "20",
+      "appartment": "",
+      "postal_code": "11375 ",
       "is_deleted": false
     }
   ]

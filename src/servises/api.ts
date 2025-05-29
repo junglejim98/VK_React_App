@@ -28,3 +28,5 @@ export const addAddress = (address: Omit<Address, 'id'>) => {
     };
     return api.post<Address>('/addresses', payload);
 };
+
+export default api;

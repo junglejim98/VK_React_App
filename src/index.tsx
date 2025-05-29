@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { configure } from 'mobx';
-import './styles/global.scss';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 configure({ enforceActions: 'never' })
 
