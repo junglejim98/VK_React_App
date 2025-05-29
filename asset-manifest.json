@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/VK_React_App/static/css/main.0d6acde6.css",
+    "main.js": "/VK_React_App/static/js/main.c244db4e.js",
+    "static/js/453.41735a7c.chunk.js": "/VK_React_App/static/js/453.41735a7c.chunk.js",
+    "index.html": "/VK_React_App/index.html",
+    "main.0d6acde6.css.map": "/VK_React_App/static/css/main.0d6acde6.css.map",
+    "main.c244db4e.js.map": "/VK_React_App/static/js/main.c244db4e.js.map",
+    "453.41735a7c.chunk.js.map": "/VK_React_App/static/js/453.41735a7c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0d6acde6.css",
+    "static/js/main.c244db4e.js"
+  ]
+}
