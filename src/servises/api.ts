@@ -18,8 +18,8 @@ export const addUser = (user: Omit<User, 'id'>) => {
     return api.post<User>('/users', payload);
 };
 
-export const fetchAddresses = (user_id: number) => 
-    api.get<Address[]>(`/addresses?user_id=${user_id}&is_deleted=false`)
+export const fetchAllAddresses = () =>
+  api.get<Address[]>('/addresses?is_deleted=false')
 
 export const addAddress = (address: Omit<Address, 'id'>) => {
     const payload: Omit<Address, 'id'> = {

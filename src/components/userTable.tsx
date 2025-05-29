@@ -9,6 +9,9 @@ export const UserTable: React.FC = observer(() => {
     useEffect(() => {
         if (userStore.users.length === 0)
             userStore.fetchUsers()
+        if (userStore.addresses.length === 0){
+            userStore.fetchAllAddresses()
+        }
     }, [])
 
     const staticCols = ['TG_UID', 'Имя', 'Фамилия', 'TG Имя пользователя', 'URL фото', 'Роль', 'Дата регистрации', 'Адрес(а)'];

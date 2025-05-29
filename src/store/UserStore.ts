@@ -3,7 +3,7 @@ import { User, Address, UserRole } from '../types';
 import { 
     fetchUsers as apiFetchUsers, 
     addUser as apiAddUser, 
-    fetchAddresses as apiFetchAddresses, 
+    fetchAllAddresses as apiFetchAllAddresses, 
     addAddress as apiAddAddress 
 } from "../servises/api";
 
@@ -14,7 +14,6 @@ export class UserStore {
     loadingUsers = false;
     loadingAddresses = false;
 
-    page = 1;
     limit = 10;
     hasMoreUsers = true;
 
@@ -28,21 +27,19 @@ export class UserStore {
     }
 
     get addressesForUser(): Record<number, Address[]> {
-        const map: Record<number, Address[]> = {};
-        this.addresses.forEach(addr => {
-            if (!addr.is_deleted)
-                if(!map[addr.user_id]) {
-                    map[addr.user_id] = [];
-                }
-                map[addr.user_id].push(addr);
-        })
-         return map;
-    }
+        const map: Record<number, Address[]> = {}
+        return this.addresses
+            .filter(a => !a.is_deleted)
+            .reduce((map, addr) => {
+                map[addr.user_id] = map[addr.user_id] || []
+                map[addr.user_id].push(addr)
+                return map
+            }, {} as Record<number, Address[]>)
+    };
 
 
 resetUsers() {
     this.users = [];
-    this.page = 1;
     this.hasMoreUsers = true;
     this.fetchUsers();
 }
@@ -96,10 +93,10 @@ async addUser(user: Omit<User, 'id'>): Promise<User> {
     }
 };
 
-async fetchAddress(user_id: number): Promise<Address[]> {
+async fetchAllAddresses(): Promise<Address[]> {
     this.loadingAddresses = true;
     try {
-        const response = await apiFetchAddresses(user_id);
+        const response = await apiFetchAllAddresses();
         runInAction(() => {
             this. addresses = response.data;
         });
@@ -113,6 +110,8 @@ async fetchAddress(user_id: number): Promise<Address[]> {
         });
     }
 };
+
+
 
 async addAddress(address: Omit<Address, 'id'>): Promise<Address> {
     this.loadingAddresses = true;
