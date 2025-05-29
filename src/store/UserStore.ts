@@ -22,6 +22,22 @@ export class UserStore {
         makeAutoObservable(this);
     };
 
+    get dynamicFieldKeys(): string[] {
+        const keys = this.users.flatMap(u => u.extraFields ? Object.keys(u.extraFields) : [] );
+        return Array.from(new Set(keys)); 
+    }
+
+    get addressesForUser(): Record<number, Address[]> {
+        const map: Record<number, Address[]> = {};
+        this.addresses.forEach(addr => {
+            if (!addr.is_deleted)
+                if(!map[addr.user_id]) {
+                    map[addr.user_id] = [];
+                }
+                map[addr.user_id].push(addr);
+        })
+         return map;
+    }
 
 
 resetUsers() {

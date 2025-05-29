@@ -3,8 +3,8 @@ import { useForm, useFieldArray, SubmitHandler } from 'react-hook-form';
 import { observer } from 'mobx-react-lite';
 import { userStore } from '../store/UserStore';
 import { User, Address, UserRole } from '../types';
-import { addUser, addAddress } from '../servises/api';
-import type { FormValues, AddressInput, ExtraField } from '../types/form';
+import type { FormValues } from '../types/form';
+import style from "./form.module.scss";
 
 export const InfoForm: React.FC = observer(() => {
     const {
@@ -51,6 +51,7 @@ export const InfoForm: React.FC = observer(() => {
         }
    
         try {
+            console.log('form data:', data)
         const created: User = await userStore.addUser(userPayload)
 
         for (const addr of data.addresses) {
@@ -76,133 +77,136 @@ export const InfoForm: React.FC = observer(() => {
     const isSubmitting = userStore.loadingUsers || userStore.loadingAddresses
     
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} >
             <h2>Добавить пользователя</h2>
-        <div>
-            <label>Telegram UID*</label>
-            <input type="number" {...register('telegram_uid', { required: 'UID обязателен', valueAsNumber: true })} />
-            {errors.telegram_uid && <span>errors.telegram_uid.message</span>}
+        <div className={style.formRow}>
+        <div className={style.inputBlock}>
+            <label className={style.label}>Telegram UID*</label>
+            <input type="number" {...register('telegram_uid', { required: 'UID обязателен', valueAsNumber: true })} className={style.input}/>
+            {errors.telegram_uid && <span>{errors.telegram_uid.message}</span>}
         </div>
 
-        <div>
-            <label>Имя*</label>
-            <input type="text" {...register('first_name', { required: 'Имя обязательно' })} />
-            {errors.first_name && <span>errors.first_name.message</span>}
+        <div className={style.inputBlock}>
+            <label className={style.label}>Имя*</label>
+            <input type="text" {...register('first_name', { required: 'Имя обязательно' })} className={style.input}/>
+            {errors.first_name && <span>{errors.first_name.message}</span>}
         </div>
 
-        <div>
-            <label>Фамилия*</label>
-            <input type="text" {...register('last_name', { required: 'Фамилия обязательно' })} />
-            {errors.last_name && <span>errors.last_name.message</span>}
+        <div className={style.inputBlock}>
+            <label className={style.label}>Фамилия*</label>
+            <input type="text" {...register('last_name', { required: 'Фамилия обязательно' })} className={style.input}/>
+            {errors.last_name && <span>{errors.last_name.message}</span>}
         </div>
 
-        <div>
-            <label>TG username</label>
-            <input type="text" {...register('tg_username')} />
+        <div className={style.inputBlock}>
+            <label className={style.label}>TG username</label>
+            <input type="text" {...register('tg_username')} className={style.input}/>
         </div>
 
-        <div>
-            <label>Ссылка на фото профиля</label>
+        <div className={style.inputBlock}>
+            <label className={style.label}>Ссылка на фото профиля</label>
             <input {
                 ...register('photo_url', {
                     pattern: {
-                        value: /^(https?:\/\/\$+)$/,
+                        value: /^(https?:\/\/\S+)$/,
                         message: 'Неверная ссылка',
                     },
                 })
-            } />
-            {errors.photo_url && <span>errors.photo_url.message</span>}
+            } className={style.input}/>
+            {errors.photo_url && <span>{errors.photo_url.message}</span>}
         </div>
-        <div>
-            <label>Роль*</label>
-            <select {...register('role_id', {required: true})}>
+        <div className={style.inputBlock}>
+            <label className={style.label}>Роль*</label>
+            <select {...register('role_id', {required: true})} className={style.input}>
                 <option value = {UserRole.ADMIN}>ADMIN</option>
                 <option value = {UserRole.MODERATOR}>MODERATOR</option>
-                <option value = {UserRole.USER} selected>USER</option>
+                <option value = {UserRole.USER}>USER</option>
             </select>
         </div>
 
-        <fieldset>
-            <legend> Дополнительные поля </legend>
+        <fieldset className={style.field}>
+            <legend className={style.legend}> Дополнительные поля </legend>
             {extraFields.map((userField, idx) => (
-                <div key = {userField.id}>
+                <div key = {userField.id} className={style.inputBlock}>
                     <input
                         placeholder='Название поля'
                         {
                             ...register(`extraFields.${idx}.key` as const, {
                                 required: 'Введите имя поля',
                             })
-                        } />
+                        } className={style.input}/>
                     <input placeholder='Значение для нового поля'
                     {
                         ...register(`extraFields.${idx}.value` as const, {
                             required: ' Задайте значение для поля',
                         })
-                    } />
-                    <button type='button' onClick={() => removeUserExtra(idx)}>
+                    } className={style.input}/>
+                    <button type='button' onClick={() => removeUserExtra(idx)} className={style.button}>
                         Удалить поле
                     </button>
                 </div>
             ))}
-            <button type='button' onClick={() => appendUserExtra({key: '', value: ''})}>
+            <button type='button' onClick={() => appendUserExtra({key: '', value: ''})} className={style.button}>
                 Добавить дополнительное поле
             </button>
         </fieldset>
 
-        <fieldset>
-            <legend>Адрес</legend>
+        <fieldset className={style.field}>
+            <legend className={style.legend}>Адрес</legend>
             {addresses.map((addrField, idx) => (
-                <div key = {addrField.id}>
+                <div key = {addrField.id} className={style.inputBlock}>
                     <h4>Адрес №{idx + 1}</h4>
                     <input
                         placeholder='Страна'
                         {
-                            ...register(`addresses.${idx}.city`, { required: 'Страна обязателен' })
-                        } />
+                            ...register(`addresses.${idx}.country`, { required: 'Страна обязателен' })
+                        } className={style.input}/>
                     <input
                         placeholder='Город'
                         {
                             ...register(`addresses.${idx}.city`, { required: 'Город обязателен' })
-                        } />
+                        } className={style.input}/>
                     <input
                         placeholder='Улица'
                         {
                             ...register(`addresses.${idx}.street`, { required: 'Улица обязателна' })
-                        } />
+                        } className={style.input}/>
                     <input
                         placeholder='Дом'
                         {
                             ...register(`addresses.${idx}.building`, { required: 'Номер дома обязателен' })
-                        } />
+                        } className={style.input}/>
                     <input
                         placeholder='Квартира'
                         {
                             ...register(`addresses.${idx}.appartment`)
-                        } />
+                        } className={style.input}/>
                     <input 
                         placeholder='Индекс'
                         {
                             ...register(`addresses.${idx}.postal_code`, {required: 'Индекс обязателен'})
                         }
-                    />
+                    className={style.input} />
                     <button type='button' onClick={() => {
                         if (addresses.length > 1) removeAddress(idx)}} 
                         disabled = {addresses.length <= 1}
-                        >
+                        className={style.button}>
                         Удалить адрес
                     </button>
                 </div>
             ))}
             <button type='button' onClick={() => appendAddress({
                 country: '', city: '', street: '', building: '', appartment: '', postal_code: ''
-                })}>
+                })} className={style.button}>
                     Добавить дополнительный адрес
                 </button>
         </fieldset>
-
-        <button type='submit' disabled={isSubmitting}>
-            {isSubmitting ? 'Сохраняю...' : 'Сохранить'}
-        </button>
+        </div>
+      
+            <button type='submit' disabled={isSubmitting} className={style.submitButton}>
+                {isSubmitting ? 'Сохраняю...' : 'Сохранить'}
+            </button>
+      
         </form>
     )
 })

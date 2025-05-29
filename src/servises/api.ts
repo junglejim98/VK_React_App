@@ -2,7 +2,7 @@ import axios from 'axios';
 import { User, Address, UserRole } from '../types/index';
 
 const api = axios.create({
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001/';
+    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001/'
 });
 
 export const fetchUsers = (page: number, limit: number) => 
@@ -19,12 +19,12 @@ export const addUser = (user: Omit<User, 'id'>) => {
 };
 
 export const fetchAddresses = (user_id: number) => 
-    api.get<Address[]>(`/addresses?user_id=${user_id}&is_deleted=false`);
+    api.get<Address[]>(`/addresses?user_id=${user_id}&is_deleted=false`)
 
 export const addAddress = (address: Omit<Address, 'id'>) => {
     const payload: Omit<Address, 'id'> = {
         ...address,
         is_deleted: address.is_deleted ?? false
     };
-    return api.post<Address>('/address', payload);
+    return api.post<Address>('/addresses', payload);
 };

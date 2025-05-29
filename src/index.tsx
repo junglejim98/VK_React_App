@@ -3,13 +3,19 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { configure } from 'mobx';
+import './styles/global.scss';
+
+configure({ enforceActions: 'never' })
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+  <div className='container'>
     <App />
+  </div>
   </React.StrictMode>
 );
 

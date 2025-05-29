@@ -1,4 +1,91 @@
 {
-  "users": [],
-  "addresses": []
+  "users": [
+    {
+      "id": "e75c",
+      "telegram_uid": 0,
+      "first_name": "Тест",
+      "last_name": "Тестов",
+      "tg_username": "@test",
+      "photo_url": "https://upload.wikimedia.org/wikipedia/ru/thumb/3/3f/%D0%93%D1%83%D0%B1%D0%BA%D0%B0_%D0%91%D0%BE%D0%B1_%D0%BF%D0%B5%D1%80%D1%81%D0%BE%D0%BD%D0%B0%D0%B6.png/1100px-%D0%93%D1%83%D0%B1%D0%BA%D0%B0_%D0%91%D0%BE%D0%B1_%D0%BF%D0%B5%D1%80%D1%81%D0%BE%D0%BD%D0%B0%D0%B6.png",
+      "role_id": 3,
+      "created_at": "2025-05-29T12:12:38.786Z",
+      "extraFields": {
+        "Instagram": "@insta_test"
+      }
+    },
+    {
+      "id": "1277",
+      "telegram_uid": 0,
+      "first_name": "Тест",
+      "last_name": "Тестов",
+      "tg_username": "@test",
+      "photo_url": "https://upload.wikimedia.org/wikipedia/ru/thumb/3/3f/%D0%93%D1%83%D0%B1%D0%BA%D0%B0_%D0%91%D0%BE%D0%B1_%D0%BF%D0%B5%D1%80%D1%81%D0%BE%D0%BD%D0%B0%D0%B6.png/1100px-%D0%93%D1%83%D0%B1%D0%BA%D0%B0_%D0%91%D0%BE%D0%B1_%D0%BF%D0%B5%D1%80%D1%81%D0%BE%D0%BD%D0%B0%D0%B6.png",
+      "role_id": 3,
+      "created_at": "2025-05-29T12:41:47.210Z",
+      "extraFields": {
+        "Instagram": "@insta_test"
+      }
+    },
+    {
+      "id": "2896",
+      "telegram_uid": 0,
+      "first_name": "Тест",
+      "last_name": "Тестов",
+      "tg_username": "@test",
+      "photo_url": "https://upload.wikimedia.org/wikipedia/ru/thumb/3/3f/%D0%93%D1%83%D0%B1%D0%BA%D0%B0_%D0%91%D0%BE%D0%B1_%D0%BF%D0%B5%D1%80%D1%81%D0%BE%D0%BD%D0%B0%D0%B6.png/1100px-%D0%93%D1%83%D0%B1%D0%BA%D0%B0_%D0%91%D0%BE%D0%B1_%D0%BF%D0%B5%D1%80%D1%81%D0%BE%D0%BD%D0%B0%D0%B6.png",
+      "role_id": 3,
+      "created_at": "2025-05-29T12:46:08.644Z",
+      "extraFields": {
+        "Instagram": "@insta_test"
+      }
+    },
+    {
+      "id": "9d8d",
+      "telegram_uid": 12587458782,
+      "first_name": "иванов",
+      "last_name": "иван",
+      "tg_username": "@ivan",
+      "photo_url": "",
+      "role_id": 3,
+      "created_at": "2025-05-29T12:47:42.517Z",
+      "extraFields": {
+        "VK": "IVANOV IVAN"
+      }
+    }
+  ],
+  "addresses": [
+    {
+      "id": "a091",
+      "user_id": "2896",
+      "country": "Россия",
+      "city": "Тула",
+      "street": "Тульская",
+      "building": "10",
+      "appartment": "",
+      "postal_code": "300911",
+      "is_deleted": false
+    },
+    {
+      "id": "f936",
+      "user_id": "9d8d",
+      "country": "RUS",
+      "city": "TULA",
+      "street": "TULA",
+      "building": "12",
+      "appartment": "12",
+      "postal_code": "121212",
+      "is_deleted": false
+    },
+    {
+      "id": "4859",
+      "user_id": "9d8d",
+      "country": "usa",
+      "city": "detroit",
+      "street": "11street",
+      "building": "98",
+      "appartment": "9",
+      "postal_code": "19829nz",
+      "is_deleted": false
+    }
+  ]
 }
