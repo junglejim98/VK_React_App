@@ -47,23 +47,21 @@ resetUsers() {
     this.fetchUsers();
 }
 
-async fetchUsers() {
+async fetchUsers(): Promise<User[]> {
     if(this.loadingUsers || !this.hasMoreUsers)
-        return
+        return []
     this.loadingUsers = true;
     try {
-        const response = await apiFetchUsers(this.page, this.limit);
+        const offset = this.users.length
+
+        const response = await apiFetchUsers(offset, this.limit);
         const data = response.data;
+
         runInAction(() => {
-            this.users = [...this.users, ...data];
-            if(data.length < this.limit){
-                this.hasMoreUsers = false;
-            }
-            else {
-                this.page += 1;
-            }
+            this.users.push(...data);
+            this.hasMoreUsers = data.length === this.limit
         })
-        return response.data;
+        return data;
     } catch (error) {
         console.error('Не могу загрузить пользователей', error);
         throw error;
@@ -74,7 +72,7 @@ async fetchUsers() {
     }
 };
 
-async addUser(user: Omit<User, 'id'>) {
+async addUser(user: Omit<User, 'id'>): Promise<User> {
     this.loadingUsers = true;
 
     const userToAdd: Omit<User, 'id'> = {
@@ -82,7 +80,6 @@ async addUser(user: Omit<User, 'id'>) {
         role_id: user.role_id ?? UserRole.USER,
         created_at: user.created_at || new Date().toISOString(),
     }
-
     try {
         const response = await apiAddUser(userToAdd);
         runInAction(() => {
@@ -99,7 +96,7 @@ async addUser(user: Omit<User, 'id'>) {
     }
 };
 
-async fetchAddress(user_id: number) {
+async fetchAddress(user_id: number): Promise<Address[]> {
     this.loadingAddresses = true;
     try {
         const response = await apiFetchAddresses(user_id);
@@ -117,7 +114,7 @@ async fetchAddress(user_id: number) {
     }
 };
 
-async addAddress(address: Omit<Address, 'id'>) {
+async addAddress(address: Omit<Address, 'id'>): Promise<Address> {
     this.loadingAddresses = true;
 
     const addressesToAdd: Omit<Address, 'id'> = {

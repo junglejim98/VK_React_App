@@ -5,8 +5,8 @@ const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL || 'http://localhost:3001/'
 });
 
-export const fetchUsers = (page: number, limit: number) => 
-    api.get<User[]>(`/users?_sort=created_at&_order=desc&_page=${page}&_limit=${limit}`);
+export const fetchUsers = (start: number, limit: number) => 
+    api.get<User[]>(`/users?_sort=created_at&_order=desc&_start=${start}&_limit=${limit}`);
 
 
 export const addUser = (user: Omit<User, 'id'>) => {
