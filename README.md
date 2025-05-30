@@ -1,46 +1,83 @@
-# Getting Started with Create React App
+# VK React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Описание выполненного задания
 
-## Available Scripts
+По условию задачи необходимо было разработать приложение с формой и таблицей, которые могут хранить произвольное количество полей, от 5.
 
-In the project directory, you can run:
+Чтобы не изобретать велосипед и не придумывать поля ради полей, я решил опереться на мой pet-проект. Я разрабатываю TG mini app для паблика моей жены (она рисует и продает арты по K-POP фандомам). Фактически эта задача мне помогла продумать дополнительный функционал для моего проекта, буду выводить в админке таблицу с пользаками.
 
-### `npm start`
+## Чек-лист выполнения
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Таблица с полями от 5 и больше (изменяются динамически, в зависимости от того, как отработает форма. √
+2. Загрузка таблицы черещ <InfifnitScroll> с пагинацией по 10 элементов. √
+3. Стейт-менеджер используется mobX. √ 
+    3.A. Тут тоже стоит сказать спасибо вашему заданию, было интересно поизучать работу с mobX. Для такой задачи в вакууме использование стейт-менеджера может быть избыточно, но так как для меня эта задача имеет прикладное значение и часть задачи будет масштабироваться на большой проект, для меня использование стейт-менеджера оправдано.
+4. Форма с полями от 5 и количество полей может динамически увеличиваться. Поле с URL имеет валидацию с проверкой корректности ссылки на изображение. При отправке формы отрабатывает стейт для кнопки (дизейблится и меняет текст на "Сохраняю"). √
+5. Форма отправляется по API, записи отображаются в таблице. √
+6. Код расположен на GitHub. √
+7. Написаны тесты для проверки получения списка пользователей и загрузке пользователя в базу. √
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Используемые библиотеки для UI и API 
 
-### `npm test`
+Для UI используется фреймворк Bootstrap-react. Было принято решение использовать этот фреймворк, а не писать код на SCSS в целях экономии времени, я решил сосредоточиться на логических задачах, а не на стилях, как и просит условие ТЗ.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+В качестве API используется Json-server. Файл с DB лежит в проекте.
 
-### `npm run build`
+## Как запустить локально
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+git clone https://github.com/junglejim98/VK_React_App.git
+cd VK_React_App
+npm install                 
+npm run server              
+npm start                   
+npm test                    
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Технологии
+- React 18 + TypeScript
+- MobX v6
+- React Hook Form + useFieldArray
+- React-Bootstrap
+- react-infinite-scroll-component
+- json-server
+- Jest + axios-mock-adapter
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Структура проекта
 
-### `npm run eject`
+src/
+├─ components/      # переиспользуемые UI‑блоки (InfoForm и пр.)
+├─ pages/           # главные страницы: FormPage, TablePage
+├─ services/        # axios‑инстанс и API‑функции
+│  └─ api.ts
+├─ store/           # MobX‑store: UserStore.ts
+├─ types/           # все TS‑интерфейсы и enum
+│  └─ index.ts
+├─ App.tsx
+└─ index.tsx
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## API
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+GET  | /users?_start={offset}&_limit={limit} | Получить список пользователей, отсортированных по created_at
+POST | /users                                | Создать нового пользователя (поле id генерируется сервером)
+GET  | /addresses?is_deleted=false           | Получить все непомеченные как удалённые адреса
+POST | /addresses                            | Создать новый адрес
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Основные моменты реализации
+Типизация: `enum UserRole, interface User, interface Address, Omit<User,'id'>, Record<string,string>`.
+API‑слой: `единый axios‑инстанс (baseURL), функции fetchUsersByOffset, addUser, fetchAllAddresses, addAddress`.
+MobX‑Store:
+`users: User[], addresses: Address[]`
+`Асинхронные методы с async/await, runInAction, флаги загрузки и hasMoreUsers`.
+Геттеры:
+`dynamicFieldKeys — уникальные названия доп. полей, для шапки таблицы`.
+`addressesForUser — группировка адресов по user_id`.
 
-## Learn More
+UI:
+Форма (infoForm): `React Hook Form + useFieldArray, React‑Bootstrap Grid и Controls`.
+Таблица (userTable): `Infinite Scroll + React‑Bootstrap Table, динамические колонки и адреса`.
+Тестирование: `Mock‑адаптер axios, проверка совпадения URL, тесты на наполнение стора и флаг hasMoreUsers`.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Автор: LysenokGA · VK React App
