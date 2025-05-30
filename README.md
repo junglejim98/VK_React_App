@@ -41,8 +41,11 @@ npm test
 ## API
 
 GET - `/users?_start={offset}&_limit={limit}` - Получить список пользователей, отсортированных по created_at
+
 POST - `/users` - Создать нового пользователя (поле id генерируется сервером)
+
 GET  - `/addresses?is_deleted=false` - Получить все непомеченные как удалённые адреса
+
 POST - `/addresses` - Создать новый адрес
 
 
