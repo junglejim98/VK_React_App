@@ -31,7 +31,7 @@ describe('UserStore', () => {
       },
     ]
     mock
-      .onGet('/users?_sort=created_at&_order=desc&_page=1&_limit=10')
+      .onGet('/users?_sort=created_at&_order=desc&_start=0&_limit=10')
       .reply(200, fakeUsers, { 'x-total-count': '1' })
 
       await store.fetchUsers()
