@@ -50,13 +50,18 @@ async fetchUsers(): Promise<User[]> {
     this.loadingUsers = true;
     try {
         const offset = this.users.length
-
         const response = await apiFetchUsers(offset, this.limit);
+
+        const totalHeader = response.headers['x-total-count'];
+        const total = totalHeader !== undefined ? Number(totalHeader) : undefined;
         const data = response.data;
 
         runInAction(() => {
             this.users.push(...data);
-            this.hasMoreUsers = data.length === this.limit
+            if(total !== undefined && !isNaN(total))
+                this.hasMoreUsers = this.users.length < total;
+            else
+                this.hasMoreUsers = data.length === this.limit
         })
         return data;
     } catch (error) {
